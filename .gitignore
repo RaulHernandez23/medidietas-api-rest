@@ -1,0 +1,29 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Entorno de desarrollo de VS Code
+.vscode/
+
+# Dependencias del entorno de desarrollo
+.env
+
+# Archivos generados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Carpeta de logs
+logs/
+*.log
+
+# Archivos generados por el sistema de pruebas
+coverage/
+
+# Archivos de compilación (si aplicas algún tipo de compilación/transpilación)
+dist/
+build/
+
+# Directorios de dependencias
+public/
