@@ -1,5 +1,5 @@
 {
-  "name": "express-mysql",
+  "name": "medidietas-api-rest",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
