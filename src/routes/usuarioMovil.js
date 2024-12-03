@@ -4,6 +4,7 @@ const { validarJWT } = require("../helpers/validar-jwt");
 const {
   usuarioLogin,
   crearUsuarioMovil,
+  cerrarSesion,
   obtenerUsuariosMovil,
   actualizarUsuarioMovil,
   eliminarUsuarioMovil,
@@ -13,6 +14,7 @@ const router = express.Router();
 
 router.post("/signup", crearUsuarioMovil);
 router.post("/login", usuarioLogin);
+router.post("/logout", [validarJWT], cerrarSesion);
 router.get("/", [validarJWT], obtenerUsuariosMovil);
 router.put("/:id", [validarJWT], actualizarUsuarioMovil);
 router.delete("/:id", [validarJWT], eliminarUsuarioMovil);

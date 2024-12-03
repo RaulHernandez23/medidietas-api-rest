@@ -2,6 +2,7 @@ const UsuarioMovil = require("../models/UsuarioMovil");
 const Objetivo = require("../models/Objetivo");
 const sequelize = require("../models/database");
 const { generarJWT } = require("../helpers/generar-jwt");
+const { invalidarJWT } = require("../helpers/invalidar-jwt");
 
 const usuarioLogin = async (req, res) => {
   const { correo, contrasena } = req.body;
@@ -68,6 +69,21 @@ const crearUsuarioMovil = async (req, res) => {
   }
 };
 
+const cerrarSesion = async (req, res) => {
+  try {
+    const token = req.header("x-token");
+    if (!token) {
+      return res.status(400).json({ msg: "No hay token en la petición" });
+    }
+
+    invalidarJWT(token);
+
+    res.json({ msg: "Sesión cerrada correctamente" });
+  } catch (error) {
+    res.status(500).json({ msg: "Error al cerrar sesión", error });
+  }
+};
+
 const obtenerUsuariosMovil = async (req, res) => {
   try {
     const usuariosMovil = await UsuarioMovil.findAll();
@@ -100,6 +116,7 @@ const eliminarUsuarioMovil = async (req, res) => {
 module.exports = {
   usuarioLogin,
   crearUsuarioMovil,
+  cerrarSesion,
   obtenerUsuariosMovil,
   actualizarUsuarioMovil,
   eliminarUsuarioMovil,
