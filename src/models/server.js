@@ -20,6 +20,7 @@ class Server {
   routes() {
     this.app.use("/api/medidietas/usuarios", require("../routes/usuarioMovil"));
     this.app.use("/api/medidietas/comidas", require("../routes/comida"));
+    this.app.use("/api/medidietas/alimentos", require("../routes/alimento"));
   }
 
   listen() {

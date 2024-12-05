@@ -4,11 +4,6 @@ const sequelize = require("./database");
 const Comida = sequelize.define(
   "comida",
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     nombre: {
       type: DataTypes.STRING,
       allowNull: false,
