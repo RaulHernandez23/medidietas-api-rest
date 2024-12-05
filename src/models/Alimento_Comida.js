@@ -6,6 +6,10 @@ const Alimento = require("./Alimento");
 const ComidaAlimento = sequelize.define(
   "alimento_comida",
   {
+    cantidad: {
+      type: DataTypes.DECIMAL(8, 2),
+      allowNull: false,
+    },
     id_alimento: {
       type: DataTypes.INTEGER,
       allowNull: false,

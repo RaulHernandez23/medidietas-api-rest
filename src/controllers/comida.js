@@ -13,6 +13,45 @@ const obtenerComidas = async (req, res) => {
   }
 };
 
+const obtenerComidaPorId = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const comida = await Comida.findByPk(id, {
+      where: { estado: true },
+      include: [
+        {
+          model: Alimento,
+          through: {
+            attributes: ["cantidad"],
+          },
+          attributes: ["nombre"],
+        },
+      ],
+    });
+
+    if (!comida) {
+      return res.status(404).json({ error: "Comida no encontrada" });
+    }
+
+    // Simplificar la respuesta
+    const respuesta = {
+      id: comida.id,
+      nombre: comida.nombre,
+      preparacion_video: comida.preparacion_video,
+      receta: comida.receta,
+      estado: comida.estado,
+      alimentos: comida.alimentos.map((alimento) => ({
+        nombre: alimento.nombre,
+        cantidad: alimento.alimento_comida.cantidad,
+      })),
+    };
+
+    res.json(respuesta);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 const registrarComida = async (req, res) => {
   const { nombre, preparacion_video, receta, estado, alimentos } = req.body;
   const transaction = await sequelize.transaction();
@@ -31,8 +70,9 @@ const registrarComida = async (req, res) => {
     }
 
     // Verificar si todos los alimentos existen
+    const nombresAlimentos = alimentos.map((a) => a.nombre);
     const alimentosEncontrados = await Alimento.findAll({
-      where: { nombre: alimentos },
+      where: { nombre: { [Op.in]: nombresAlimentos } },
       transaction,
     });
 
@@ -47,16 +87,25 @@ const registrarComida = async (req, res) => {
       { transaction }
     );
 
-    // Asociar los alimentos
-    for (const alimento of alimentosEncontrados) {
-      await Alimento_Comida.create(
-        { id_receta: nuevaComida.id, id_alimento: alimento.id },
-        { transaction }
+    // Asociar los alimentos con la cantidad
+    for (const alimento of alimentos) {
+      const alimentoEncontrado = alimentosEncontrados.find(
+        (a) => a.nombre === alimento.nombre
       );
+      if (alimentoEncontrado) {
+        await Alimento_Comida.create(
+          {
+            id_receta: nuevaComida.id,
+            id_alimento: alimentoEncontrado.id,
+            cantidad: alimento.cantidad,
+          },
+          { transaction }
+        );
+      }
     }
 
     await transaction.commit();
-    res.status(201).json(nuevaComida);
+    res.status(201).json({ mensaje: "Comida registrada correctamente" });
   } catch (error) {
     await transaction.rollback();
     res.status(400).json({ error: error.message });
@@ -90,7 +139,7 @@ const editarComida = async (req, res) => {
 
     // Verificar si todos los alimentos existen
     const alimentosEncontrados = await Alimento.findAll({
-      where: { nombre: alimentos },
+      where: { nombre: alimentos.map((a) => a.nombre) },
       transaction,
     });
 
@@ -109,15 +158,24 @@ const editarComida = async (req, res) => {
     });
 
     // Asociar los nuevos alimentos
-    for (const alimento of alimentosEncontrados) {
-      await Alimento_Comida.create(
-        { id_receta: comida.id, id_alimento: alimento.id },
-        { transaction }
+    for (const alimento of alimentos) {
+      const alimentoEncontrado = alimentosEncontrados.find(
+        (a) => a.nombre === alimento.nombre
       );
+      if (alimentoEncontrado) {
+        await Alimento_Comida.create(
+          {
+            id_receta: comida.id,
+            id_alimento: alimentoEncontrado.id,
+            cantidad: alimento.cantidad,
+          },
+          { transaction }
+        );
+      }
     }
 
     await transaction.commit();
-    res.status(200).json(comida);
+    res.status(200).json({ mensaje: "Comida actualizada correctamente" });
   } catch (error) {
     await transaction.rollback();
     res.status(400).json({ error: error.message });
@@ -149,6 +207,7 @@ const eliminarComida = async (req, res) => {
 
 module.exports = {
   obtenerComidas,
+  obtenerComidaPorId,
   registrarComida,
   editarComida,
   eliminarComida,

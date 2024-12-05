@@ -62,7 +62,7 @@ const crearUsuarioMovil = async (req, res) => {
     });
 
     await transaction.commit();
-    res.status(201).json(usuarioMovil);
+    res.status(200).json({ mensaje: "Usuario registrado correctamente" });
   } catch (error) {
     await transaction.rollback();
     res.status(400).json({ error: error.message, details: error.errors });
@@ -143,7 +143,7 @@ const editarUsuario = async (req, res) => {
     await usuario.objetivo.update(objetivo, { transaction });
 
     await transaction.commit();
-    res.status(200).json(usuario);
+    res.status(200).json({ mensaje: "Usuario actualizado correctamente" });
   } catch (error) {
     await transaction.rollback();
     res.status(400).json({ error: error.message });
