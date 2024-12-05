@@ -84,31 +84,68 @@ const cerrarSesion = async (req, res) => {
   }
 };
 
-const obtenerUsuariosMovil = async (req, res) => {
+const obtenerUsuarioPorNombre = async (req, res) => {
+  const { nombre_usuario } = req.params;
   try {
-    const usuariosMovil = await UsuarioMovil.findAll();
-    res.json(usuariosMovil);
+    const usuario = await UsuarioMovil.findOne({
+      where: { nombre_usuario },
+      include: [{ model: Objetivo }],
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    res.json(usuario);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-const actualizarUsuarioMovil = async (req, res) => {
-  try {
-    const { id } = req.params;
-    await UsuarioMovil.update(req.body, { where: { id } });
-    res.json({ message: "UsuarioMovil actualizado correctamente" });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+const editarUsuario = async (req, res) => {
+  const { nombre_usuario } = req.params;
+  const { usuarioMovil, objetivo } = req.body;
+  const transaction = await sequelize.transaction();
 
-const eliminarUsuarioMovil = async (req, res) => {
   try {
-    const { id } = req.params;
-    await UsuarioMovil.destroy({ where: { id } });
-    res.json({ message: "UsuarioMovil eliminado correctamente" });
+    // Buscar el usuario por su nombre_usuario
+    const usuario = await UsuarioMovil.findOne({
+      where: { nombre_usuario },
+      include: [{ model: Objetivo }],
+      transaction,
+    });
+    if (!usuario) {
+      await transaction.rollback();
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    // Verificar si el nuevo nombre de usuario ya existe (excluyendo el usuario actual)
+    if (
+      usuarioMovil.nombre_usuario &&
+      usuarioMovil.nombre_usuario !== nombre_usuario
+    ) {
+      const usuarioExistente = await UsuarioMovil.findOne({
+        where: { nombre_usuario: usuarioMovil.nombre_usuario },
+        transaction,
+      });
+      if (usuarioExistente) {
+        await transaction.rollback();
+        return res
+          .status(400)
+          .json({ error: "Este nombre de usuario no se encuentra disponible" });
+      }
+    }
+
+    // Actualizar los datos del usuario
+    await usuario.update(usuarioMovil, { transaction });
+
+    // Actualizar los datos del objetivo asociado
+    await usuario.objetivo.update(objetivo, { transaction });
+
+    await transaction.commit();
+    res.status(200).json(usuario);
   } catch (error) {
+    await transaction.rollback();
     res.status(400).json({ error: error.message });
   }
 };
@@ -117,7 +154,6 @@ module.exports = {
   usuarioLogin,
   crearUsuarioMovil,
   cerrarSesion,
-  obtenerUsuariosMovil,
-  actualizarUsuarioMovil,
-  eliminarUsuarioMovil,
+  obtenerUsuarioPorNombre,
+  editarUsuario,
 };

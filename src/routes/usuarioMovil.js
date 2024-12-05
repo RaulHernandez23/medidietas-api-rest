@@ -5,9 +5,8 @@ const {
   usuarioLogin,
   crearUsuarioMovil,
   cerrarSesion,
-  obtenerUsuariosMovil,
-  actualizarUsuarioMovil,
-  eliminarUsuarioMovil,
+  obtenerUsuarioPorNombre,
+  editarUsuario,
 } = require("../controllers/usuarioMovil");
 
 const router = express.Router();
@@ -15,8 +14,7 @@ const router = express.Router();
 router.post("/signup", crearUsuarioMovil);
 router.post("/login", usuarioLogin);
 router.post("/logout", [validarJWT], cerrarSesion);
-router.get("/", [validarJWT], obtenerUsuariosMovil);
-router.put("/:id", [validarJWT], actualizarUsuarioMovil);
-router.delete("/:id", [validarJWT], eliminarUsuarioMovil);
+router.get("/:nombre_usuario", [validarJWT], obtenerUsuarioPorNombre);
+router.put("/:nombre_usuario", [validarJWT], editarUsuario);
 
 module.exports = router;
