@@ -45,6 +45,10 @@ const Alimento = sequelize.define(
     id_unidad_medida: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: UnidadMedida,
+        key: "id",
+      },
     },
   },
   {

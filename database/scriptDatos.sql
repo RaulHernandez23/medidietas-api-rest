@@ -22,9 +22,9 @@ INSERT INTO `alimento_comida` (`cantidad`, `id_alimento`, `id_receta`) VALUES
 
 -- Insertar datos de ejemplo en la tabla momento
 INSERT INTO `momento` (`nombre`) VALUES
-('Mañana'),
-('Tarde'),
-('Noche');
+('Desayuno'),
+('Comida'),
+('Cena');
 
 -- Insertar datos de ejemplo en la tabla experto_nutricion
 INSERT INTO `experto_nutricion` (`nombre`, `apellido_paterno`, `apellido_materno`, `contrasena`, `correo`, `fecha_nacimiento`, `foto`, `educacion`, `perfilProfesional`) VALUES
@@ -47,7 +47,7 @@ INSERT INTO `usuario_movil` (`nombre_usuario`, `nombre`, `apellido_paterno`, `ap
 
 -- Insertar datos de ejemplo en la tabla consumo
 INSERT INTO `consumo` (`fecha`, `id_momento`, `id_alimento`, `id_comida`, `id_usuario_movil`, `cantidad`) VALUES
-('2023-10-01', 1, 1, NULL, 1, 150.00),
-('2023-10-01', 2, NULL, 1, 2, 250.00),
-('2023-10-02', 1, 2, NULL, 3, 200.00),
-('2023-10-02', 2, NULL, 2, 4, 300.00);
+('2024-12-05', 1, 1, NULL, 1, 150.00),
+('2024-12-05', 2, NULL, 1, 1, 250.00),
+('2024-12-05', 1, 2, NULL, 1, 200.00),
+('2024-12-05', 2, NULL, 2, 1, 300.00);

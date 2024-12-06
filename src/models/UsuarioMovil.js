@@ -5,6 +5,11 @@ const Objetivo = require("./Objetivo");
 const UsuarioMovil = sequelize.define(
   "usuario_movil",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     nombre_usuario: {
       type: DataTypes.STRING,
       allowNull: false,
