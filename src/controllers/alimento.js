@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const Alimento = require("../models/Alimento");
 const sequelize = require("../models/database");
+const UnidadMedida = require("../models/UnidadMedida");
 
 const obtenerAlimentos = async (req, res) => {
   try {
@@ -160,10 +161,21 @@ const eliminarAlimento = async (req, res) => {
   }
 };
 
+const obtenerUnidadesMedida = async (req, res) => {
+  try {
+    const unidadesMedida = await UnidadMedida.findAll();
+    res.status(200).json(unidadesMedida);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   obtenerAlimentos,
   obtenerAlimentoPorId,
   registrarAlimento,
   editarAlimento,
   eliminarAlimento,
+  obtenerUnidadesMedida,
 };
