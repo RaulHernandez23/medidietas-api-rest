@@ -44,7 +44,7 @@ const ExpertoNutricion = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        perfilProfesional: {
+        perfil_profesional: {
             type: DataTypes.STRING,
             allowNull: false,
         }

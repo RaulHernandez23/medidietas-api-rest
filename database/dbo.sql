@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `experto_nutricion` (
     `fecha_nacimiento` DATE NOT NULL,
     `foto` BINARY(16) NULL,
     `educacion` VARCHAR(255) NOT NULL,
-    `perfilProfesional` VARCHAR(255) NOT NULL
+    `perfil_profesional` VARCHAR(255) NOT NULL
 );
 ALTER TABLE `experto_nutricion` ADD UNIQUE `experto_nutricion_correo_unique`(`correo`);
 
