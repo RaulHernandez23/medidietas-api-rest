@@ -4,11 +4,21 @@ INSERT INTO `unidad_medida` (`nombre`) VALUES
 ('mililitros'),
 ('piezas');
 
+INSERT INTO `categoria` (`nombre`) VALUES
+('Frutas'),
+('Verduras'),
+('Cereales'),
+('Leguminosas'),
+('Origen animal'),
+('Lacteos'),
+('Azúcar'),
+('Grasas');
+
 -- Insertar datos de ejemplo en la tabla alimento
-INSERT INTO `alimento` (`nombre`, `calorias`, `carbohidratos`, `grasas`, `imagen`, `proteinas`, `tamano_racion`, `estado`, `marca`, `id_unidad_medida`) VALUES
-('Manzana', 52, 14.00, 0.17, 'manzana.jpg', 0.26, 100.00, 1, 'Marca A', 1),
-('Leche', 42, 4.80, 1.00, 'leche.jpg', 3.40, 100.00, 1, 'Marca B', 2),
-('Pan Integral', 265, 49.00, 3.20, 'pan_integral.jpg', 9.00, 100.00, 1, 'Marca C', 1);
+INSERT INTO `alimento` (`nombre`, `calorias`, `carbohidratos`, `grasas`, `imagen`, `proteinas`, `tamano_racion`, `estado`, `marca`, `id_categoria`,`id_unidad_medida`) VALUES
+('Manzana', 52, 14.00, 0.17, 'manzana.jpg', 0.26, 100.00, 1, 'Marca A', 1, 1),
+('Leche', 42, 4.80, 1.00, 'leche.jpg', 3.40, 100.00, 1, 'Marca B', 6, 2),
+('Pan Integral', 265, 49.00, 3.20, 'pan_integral.jpg', 9.00, 100.00, 1, 'Marca C', 3, 1);
 
 -- Insertar datos de ejemplo en la tabla Comida
 INSERT INTO `Comida` (`nombre`, `preparacion_video`, `receta`, `estado`) VALUES

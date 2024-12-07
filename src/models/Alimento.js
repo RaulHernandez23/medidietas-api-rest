@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("./database");
 const UnidadMedida = require("./UnidadMedida");
+const Categoria = require("./Categoria");
 
 const Alimento = sequelize.define(
   "alimento",
@@ -42,6 +43,14 @@ const Alimento = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    id_categoria: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Categoria,
+        key: "id",
+      },
+    },
     id_unidad_medida: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -58,5 +67,8 @@ const Alimento = sequelize.define(
 
 Alimento.belongsTo(UnidadMedida, { foreignKey: "id_unidad_medida" });
 UnidadMedida.hasMany(Alimento, { foreignKey: "id_unidad_medida" });
+
+Alimento.belongsTo(Categoria, { foreignKey: "id_categoria" });
+Categoria.hasMany(Alimento, { foreignKey: "id_categoria" });
 
 module.exports = Alimento;

@@ -8,11 +8,13 @@ const {
   editarAlimento,
   eliminarAlimento,
   obtenerUnidadesMedida,
+  obtenerCategorias,
 } = require("../controllers/alimento");
 
 const router = express.Router();
 
 router.get("/unidades-medida", obtenerUnidadesMedida);
+router.get("/categorias", obtenerCategorias);
 router.get("/", [validarJWT], obtenerAlimentos);
 router.get("/:id", [validarJWT], obtenerAlimentoPorId);
 router.post("/", [validarJWT], registrarAlimento);

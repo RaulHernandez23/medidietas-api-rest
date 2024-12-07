@@ -1,6 +1,12 @@
 CREATE DATABASE IF NOT EXISTS `Medidietas_DATA`;
 USE `Medidietas_DATA`;
 
+-- Crear la tabla categoria
+CREATE TABLE IF NOT EXISTS `categoria` (
+    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `nombre` VARCHAR(255) NOT NULL
+);
+
 -- Crear la tabla alimento
 CREATE TABLE IF NOT EXISTS `alimento` (
     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -13,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `alimento` (
     `tamano_racion` DECIMAL(8, 2) NOT NULL,
     `estado` BOOLEAN NOT NULL,
     `marca` VARCHAR(255) NULL,
+    `id_categoria` INT NOT NULL,
     `id_unidad_medida` INT NOT NULL
 );
 ALTER TABLE `alimento` ADD UNIQUE `alimento_nombre_unique`(`nombre`);
@@ -113,7 +120,8 @@ ALTER TABLE `consumo`
     ADD CONSTRAINT `consumo_id_momento_foreign` FOREIGN KEY(`id_momento`) REFERENCES `momento`(`id`);
 
 ALTER TABLE `alimento`
-    ADD CONSTRAINT `alimento_id_unidad_medida_foreign` FOREIGN KEY(`id_unidad_medida`) REFERENCES `unidad_medida`(`id`);
+    ADD CONSTRAINT `alimento_id_unidad_medida_foreign` FOREIGN KEY(`id_unidad_medida`) REFERENCES `unidad_medida`(`id`),
+    ADD CONSTRAINT `alimento_id_categoria_foreign` FOREIGN KEY(`id_categoria`) REFERENCES `categoria`(`id`);
 
 ALTER TABLE `usuario_movil`
     ADD CONSTRAINT `usuario_movil_id_objetivo_foreign` FOREIGN KEY(`id_objetivo`) REFERENCES `objetivo`(`id`);

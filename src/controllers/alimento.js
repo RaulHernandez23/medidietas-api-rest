@@ -2,6 +2,7 @@ const { Op } = require("sequelize");
 const Alimento = require("../models/Alimento");
 const sequelize = require("../models/database");
 const UnidadMedida = require("../models/UnidadMedida");
+const Categoria = require("../models/Categoria");
 
 const obtenerAlimentos = async (req, res) => {
   try {
@@ -37,6 +38,7 @@ const registrarAlimento = async (req, res) => {
     proteinas,
     tamano_racion,
     marca,
+    id_categoria,
     id_unidad_medida,
   } = req.body;
   const transaction = await sequelize.transaction();
@@ -65,6 +67,7 @@ const registrarAlimento = async (req, res) => {
         proteinas,
         tamano_racion,
         marca,
+        id_categoria,
         id_unidad_medida,
         estado: true,
       },
@@ -90,6 +93,7 @@ const editarAlimento = async (req, res) => {
     proteinas,
     tamano_racion,
     marca,
+    id_categoria,
     id_unidad_medida,
   } = req.body;
   const transaction = await sequelize.transaction();
@@ -125,6 +129,7 @@ const editarAlimento = async (req, res) => {
         proteinas,
         tamano_racion,
         marca,
+        id_categoria,
         id_unidad_medida,
       },
       { transaction }
@@ -171,6 +176,16 @@ const obtenerUnidadesMedida = async (req, res) => {
   }
 };
 
+const obtenerCategorias = async (req, res) => {
+  try {
+    const categorias = await Categoria.findAll();
+    res.status(200).json(categorias);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   obtenerAlimentos,
   obtenerAlimentoPorId,
@@ -178,4 +193,5 @@ module.exports = {
   editarAlimento,
   eliminarAlimento,
   obtenerUnidadesMedida,
+  obtenerCategorias,
 };
