@@ -38,8 +38,8 @@ INSERT INTO `momento` (`nombre`) VALUES
 
 -- Insertar datos de ejemplo en la tabla experto_nutricion
 INSERT INTO `experto_nutricion` (`nombre`, `apellido_paterno`, `apellido_materno`, `contrasena`, `correo`, `fecha_nacimiento`, `foto`, `educacion`, `perfil_profesional`) VALUES
-('Laura', 'Gómez', 'Sánchez', 'contrasena123', 'lgomez@ejemplo.com', '1980-04-10', NULL, 'Nutrición y Dietética', 'Especialista en nutrición deportiva'),
-('Miguel', 'Ruiz', 'Martínez', 'contrasena456', 'mruiz@ejemplo.com', '1975-08-20', NULL, 'Ciencias de la Alimentación', 'Experto en dietas vegetarianas');
+('Laura', 'Gómez', 'Sánchez', 'contrasena123', 'lgomez@ejemplo.com', '1980-04-10', 'laura20241207061431.jpg', 'Nutrición y Dietética', 'Especialista en nutrición deportiva'),
+('Miguel', 'Ruiz', 'Martínez', 'contrasena456', 'mruiz@ejemplo.com', '1975-08-20', 'miguel20241207061030.jpg', 'Ciencias de la Alimentación', 'Experto en dietas vegetarianas');
 
 -- Insertar datos de ejemplo en la tabla objetivo
 INSERT INTO `objetivo` (`calorias`, `carbohidratos`, `grasas`, `proteinas`) VALUES

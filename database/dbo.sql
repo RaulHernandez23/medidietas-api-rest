@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `experto_nutricion` (
     `contrasena` VARCHAR(255) NOT NULL,
     `correo` VARCHAR(255) NOT NULL,
     `fecha_nacimiento` DATE NOT NULL,
-    `foto` BINARY(16) NULL,
+    `foto` VARCHAR(255) NOT NULL,
     `educacion` VARCHAR(255) NOT NULL,
     `perfil_profesional` VARCHAR(255) NOT NULL
 );
