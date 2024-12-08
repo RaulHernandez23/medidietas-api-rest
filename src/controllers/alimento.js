@@ -41,6 +41,7 @@ const registrarAlimento = async (req, res) => {
     id_categoria,
     id_unidad_medida,
   } = req.body;
+  console.log(req.body);
   const transaction = await sequelize.transaction();
 
   try {

@@ -23,8 +23,7 @@ const expertoLogin = async (req, res) => {
             console.log(`Token enviado en el header: ${token}`);
 
             res.json({
-                msg: "Usuario logueado",
-                experto,
+                experto
             });
         }
     } catch (error) {
