@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest --collect-coverage"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -13,10 +13,10 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
     "mysql2": "^3.11.3",
-    "sequelize": "^6.37.5",
-    "jsonwebtoken": "^9.0.2"
+    "sequelize": "^6.37.5"
   },
   "devDependencies": {
     "jest": "^29.7.0",

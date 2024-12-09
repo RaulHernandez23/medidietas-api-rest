@@ -31,6 +31,7 @@ const ExpertoNutricion = sequelize.define(
             validate: {
                 isEmail: true,
             },
+            unique: true,
         },
         fecha_nacimiento: {
             type: DataTypes.DATE,

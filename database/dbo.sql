@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `Medidietas_DATA`;
-USE `Medidietas_DATA`;
+-- CREATE DATABASE IF NOT EXISTS `Medidietas_DATA`;
+USE `medidietas_data`;
 
 -- Crear la tabla categoria
 CREATE TABLE IF NOT EXISTS `categoria` (
