@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `unidad_medida` (
 );
 
 -- Crear la tabla Comida
-CREATE TABLE IF NOT EXISTS `Comida` (
+CREATE TABLE IF NOT EXISTS `comida` (
     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `nombre` VARCHAR(255) NOT NULL,
     `preparacion_video` VARCHAR(255) NOT NULL,
