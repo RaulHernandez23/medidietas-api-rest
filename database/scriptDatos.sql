@@ -54,6 +54,7 @@ INSERT INTO `objetivo` (`calorias`, `carbohidratos`, `grasas`, `proteinas`) VALU
 -- Insertar datos de ejemplo en la tabla usuario_movil
 INSERT INTO `usuario_movil` (`nombre_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `contrasena`, `correo`, `fecha_nacimiento`, `foto`, `estatura`, `peso`, `sexo`, `id_objetivo`) VALUES
 ('skywhite', 'Miguel', 'Morales', 'Cruz', 'Morales300802', 'miguel@gmail.com', '2002-08-30', 'skywhite.png', 180.00, 75.00, 1, 1);
+('rulo23', 'Raúl', 'Hernández', 'Olivares', 'pass', 'raulh230600@gmail.com', '2000-06-23', 'rulo23.jpg', 180.00, 75.00, 1, 1);
 
 -- Insertar datos de ejemplo en la tabla consumo
 INSERT INTO `consumo` (`fecha`, `id_momento`, `id_alimento`, `id_comida`, `id_usuario_movil`, `cantidad`) VALUES

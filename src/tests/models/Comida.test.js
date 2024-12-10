@@ -119,5 +119,7 @@ describe('Delete Comida', () => {
                 nombre: 'Ensalada de manzana'
             }
         }, { transaction });
+
+        expect(comidaEliminada).toBeNull();
     });
 });
