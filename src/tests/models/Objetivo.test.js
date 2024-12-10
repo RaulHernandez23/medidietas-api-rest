@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../configTestDb');
-const Alimento = require('../../models/Objetivo');
+const sequelizeTest = require('../configTestDb');
+const Objetivo = require('../../models/Objetivo');
 
 beforeAll(async () => {
     await sequelizeTest.sync({ force: true });
@@ -28,7 +28,7 @@ describe('Create Objetivo', () => {
             proteinas: 100
         }, { transaction });
 
-        expect(objetivo.nombre).toBe('Perder peso');
+        expect(objetivo.calorias).toBe(2000.00);
     })
 
     test('Debe lanzar un error si falta un campo requerido', async () => {
@@ -58,19 +58,21 @@ describe('Update Objetivo', () => {
 
         const objetivoActualizado = await Objetivo.findByPk(1, { transaction });
 
-        expect(objetivoActualizado.calorias).toBe(2500);
+        expect(objetivoActualizado.calorias).toBe('2500.00');
     });
 })
 
 describe('Delete Objetivo', () => {
 
-    test('Debe eliminar un objetivo', async () => {
+    test('Debe lanzar un error al eliminar a un objetivo relacionado a un usuario', async () => {
         const objetivo = await Objetivo.findByPk(1);
+        await expect(objetivo.destroy({ transaction })).rejects.toThrow();
+    });
 
-        await objetivo.destroy({ transaction });
-
-        const objetivoEliminado = await Objetivo.findByPk(1, { transaction });
-
+    test('Debe eliminar un objetivo', async () => {
+        const objetivo = await Objetivo.findByPk(2);
+        await objetivo.destroy({ transaction, force: true });
+        const objetivoEliminado = await Objetivo.findByPk(2, { transaction });
         expect(objetivoEliminado).toBeNull();
     });
 });

@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../configTestDb');
-const Comida = require('../../models/UnidadMedida');
+const sequelizeTest = require('../configTestDb');
+const UnidadMedida = require('../../models/UnidadMedida');
 
 beforeAll(async () => {
     await sequelizeTest.sync({ force: true });
@@ -22,11 +22,11 @@ describe('Read UnidadMedida', () => {
 
     test('Debe devolver una unidad de medida', async () => {
         const unidadMedida = await UnidadMedida.findByPk(1);
-        expect(unidadMedida.nombre).toBe('Gramos');
+        expect(unidadMedida.nombre).toBe('gramos');
     });
 
     test('Debe devolver todas las unidades de medida', async () => {
         const unidadesMedida = await UnidadMedida.findAll();
-        expect(unidadesMedida.length.toBe(3));
+        expect(unidadesMedida.length).toBe(4);
     });
 });

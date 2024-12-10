@@ -83,31 +83,16 @@ describe('Read Experto', () => {
 describe('Update Experto', () => {
 
     test('Debe lanzar un error si el correo ya existe', async () => {
-        const experto = await ExpertoNutricion.findOne({
-            where: {
-                correo: 'mruiz@ejemplo.com'
-            }
-        });
-
+        const experto = await ExpertoNutricion.findByPk(2);
         experto.correo = 'raulh230600@gmail.com';
-
         await expect(experto.save({ transaction })).rejects.toThrow();
     });
 
     test('Debe actualizar un experto en nutrición', async () => {
-        const experto = await ExpertoNutricion.findOne({
-            where: {
-                correo: 'lgomez@ejemplo.com'
-            }
-        });
+        const experto = await ExpertoNutricion.findByPk(1);
         experto.correo = 'laura@ejemplo.com';
         await experto.save({ transaction });
-
-        const expertoActualizado = await ExpertoNutricion.findOne({
-            where: {
-                correo: 'laura@ejemplo.com'
-            }, 
-        }, { transaction });
+        const expertoActualizado = await ExpertoNutricion.findByPk(1, { transaction });
         expect(expertoActualizado.correo).toBe('laura@ejemplo.com');
     });
 });
@@ -115,19 +100,9 @@ describe('Update Experto', () => {
 describe('Delete Experto', () => {
 
     test('Debe eliminar un experto en nutrición', async () => {
-        const experto = await ExpertoNutricion.findOne({
-            where: {
-                correo: 'raulh230600@gmail.com'
-            }
-        });
+        const experto = await ExpertoNutricion.findByPk(1);
         await experto.destroy({ transaction });
-
-        const expertoEliminado = await ExpertoNutricion.findOne({
-            where: {
-                correo: 'raulh230600@gmail.com'
-            }
-        }, { transaction });
-
+        const expertoEliminado = await ExpertoNutricion.findByPk(1, { transaction });
         expect(expertoEliminado).toBeNull();
     });
 });

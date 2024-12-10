@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../configTestDb');
-const Comida = require('../../models/Categoria');
+const sequelizeTest = require('../configTestDb');
+const Categoria = require('../../models/Categoria');
 
 beforeAll(async () => {
     await sequelizeTest.sync({ force: true });

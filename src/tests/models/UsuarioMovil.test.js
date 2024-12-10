@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../configTestDb');
+const sequelizeTest = require('../configTestDb');
 const UsuarioMovil = require('../../models/UsuarioMovil');
 
 beforeAll(async () => {
@@ -102,42 +102,25 @@ describe('Update UsuarioMovil', () => {
     });
 
     test('Debe actualizar un usuario móvil', async () => {
-        const usuario = await UsuarioMovil.findOne({
-            where: {
-                nombre_usuario: 'skywhite'
-            }
-        });
-
+        const usuario = await UsuarioMovil.findByPk(1);
         usuario.nombre_usuario = 'miguelon1';
         await usuario.save({ transaction });
-
-        const usuarioActualizado = await UsuarioMovil.findOne({
-            where: {
-                nombre_usuario: 'miguelon1'
-            }
-        }, { transaction });
-
+        const usuarioActualizado = await UsuarioMovil.findByPk(1, { transaction });
         expect(usuarioActualizado.nombre_usuario).toBe('miguelon1');
     });
 })
 
-describe('Delete UsuarioMovil'), async () => {
+describe('Delete UsuarioMovil', () => {
+
+    test('Debe lanzar un error si el usuario tiene consumos asociados', async () => {
+        const usuario = await UsuarioMovil.findByPk(1);
+        await expect(usuario.destroy({ transaction })).rejects.toThrow();
+    })
 
     test('Debe eliminar un usuario móvil', async () => {
-        const usuario = await UsuarioMovil.findOne({
-            where: {
-                nombre_usuario: 'skywhite'
-            }
-        });
-
+        const usuario = await UsuarioMovil.findByPk(2);
         await usuario.destroy({ transaction });
-
-        const usuarioEliminado = await UsuarioMovil.findOne({
-            where: {
-                nombre_usuario: 'skywhite'
-            }
-        }, { transaction });
-
+        const usuarioEliminado = await UsuarioMovil.findByPk(2, { transaction });
         expect(usuarioEliminado).toBeNull();
     });
-}
+});

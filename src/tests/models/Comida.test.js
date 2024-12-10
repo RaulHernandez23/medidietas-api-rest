@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../configTestDb');
+const sequelizeTest = require('../configTestDb');
 const Comida = require('../../models/Comida');
 
 beforeAll(async () => {
@@ -56,7 +56,7 @@ describe('Read Comida', () => {
                 nombre: 'Ensalada de manzana'
             }
         });
-        expect(comidaEncontrada.nombre).toBe('Ensalada de manzana');
+        expect(comida.nombre).toBe('Ensalada de manzana');
     });
 
     test('Debe debolver nulo si no existe la comida', async () => {
@@ -72,54 +72,31 @@ describe('Read Comida', () => {
 describe('Update Comida', () => {
 
     test('Debe lanzar un error si el alimento ya existe', async () => {
-        const comida = await Comida.findOne({
-            where: {
-                nombre: 'Comida de prueba'
-            }
-        }, { transaction });
-
+        const comida = await Comida.findByPk(2);
         comida.nombre = 'Ensalada de manzana';
-
         await expect(comida.save({ transaction })).rejects.toThrow();
     });
 
     test('Debe actualizar una comida', async () => {
-        const comida = await Comida.findOne({
-            where: {
-                nombre: 'Comida de prueba'
-            }
-        });
-
+        const comida = await Comida.findByPk(2);
         comida.nombre = 'Ensalada de pollo';
         await comida.save({ transaction });
-
-        const comidaActualizada = await Comida.findOne({
-            where: {
-                nombre: 'Ensalada de pollo'
-            }
-        }, { transaction });
-
+        const comidaActualizada = await Comida.findByPk(2, { transaction });
         expect(comidaActualizada.nombre).toBe('Ensalada de pollo');
     });
 });
 
 describe('Delete Comida', () => {
 
+    test('Debe lanzar un error si la comida tiene relaciones con otras tablas', async () => {
+        const comida = await Comida.findByPk(1);
+        await expect(comida.destroy({ transaction })).rejects.toThrow();
+    });
+
     test('Debe eliminar una comida', async () => {
-        const comida = await Comida.findOne({
-            where: {
-                nombre: 'Ensalada de manzana'
-            }
-        });
-
+        const comida = await Comida.findByPk(2);
         await comida.destroy({ transaction });
-
-        const comidaEliminada = await Comida.findOne({
-            where: {
-                nombre: 'Ensalada de manzana'
-            }
-        }, { transaction });
-
+        const comidaEliminada = await Comida.findByPk(2, { transaction });
         expect(comidaEliminada).toBeNull();
     });
 });

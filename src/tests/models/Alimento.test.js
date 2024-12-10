@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../configTestDb');
+const sequelizeTest = require('../configTestDb');
 const Alimento = require('../../models/Alimento');
 
 beforeAll(async () => {
@@ -54,7 +54,7 @@ describe('Create Alimento', () => {
 
     test('Debe lanzar un error si el nombre ya existe', async () => {
         await expect(Alimento.create({
-            nombre: 'Sandía',
+            nombre: 'Manzana',
             calorias: 30,
             carbohidratos: 7.6,
             grasas: 0.2,
@@ -94,7 +94,7 @@ describe('Update Alimento', () => {
     test('Debe lanzar un error si el alimento ya existe', async () => {
         const alimento = await Alimento.findOne({
             where: {
-                nombre: 'Manzana'
+                nombre: 'Naranja'
             }
         });
 
@@ -104,41 +104,22 @@ describe('Update Alimento', () => {
     })
 
     test('Debe actualizar un alimento', async () => {
-        const alimento = await Alimento.findOne({
-            where: {
-                nombre: 'Manzana'
-            }
-        });
+        const alimento = await Alimento.findByPk(1);
 
-        alimento.nombre = 'Manzana Roja';
+        alimento.calorias = 2500;
         await alimento.save({ transaction });
 
-        const alimentoActualizado = await Alimento.findOne({
-            where: {
-                nombre: 'Manzana Roja'
-            }
-        }, { transaction });
+        const alimentoActualizado = await Alimento.findByPk(1, { transaction });
 
-        expect(alimentoActualizado.nombre).toBe('Manzana Roja');
+        expect(alimentoActualizado.calorias).toBe(2500);
     });
 });
 
 describe('Delete Alimento', () => {
     test('Debe eliminar un alimento', async () => {
-        const alimento = await Alimento.findOne({
-            where: {
-                nombre: 'Manzana'
-            }
-        });
-
-        await alimento.destroy({ transaction });
-
-        const alimentoEliminado = await Alimento.findOne({
-            where: {
-                nombre: 'Manzana'
-            }
-        }, { transaction });
-
+        const alimento = await Alimento.findByPk(4);
+        await alimento.destroy({ transaction, force: true });
+        const alimentoEliminado = await Alimento.findByPk(4, { transaction });
         expect(alimentoEliminado).toBeNull();
     });
 });

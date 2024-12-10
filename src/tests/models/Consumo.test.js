@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../configTestDb');
-const Comida = require('../../models/Consumo');
+const sequelizeTest = require('../configTestDb');
+const Consumo = require('../../models/Consumo');
 
 beforeAll(async () => {
     await sequelizeTest.sync({ force: true });
@@ -30,7 +30,7 @@ describe('Create Consumo', () => {
             id_usuario_movil: 1
         }, { transaction });
 
-        expect(consumo.fecha).toBe('2021-10-10');
+        expect(consumo.fecha).toStrictEqual(new Date('2021-10-10T00:00:00.000Z'));
     });
 
     test('Debe lanzar un error si falta un campo requerido', async () => {
