@@ -6,6 +6,14 @@ beforeAll(async () => {
     await sequelizeTest.sync({ force: true });
 });
 
+beforeEach(async () => {
+    transaction = await sequelizeTest.transaction();
+});
+
+afterEach(async () => {
+    await transaction.rollback();
+})
+
 afterAll(async () => {
     await sequelizeTest.close();
 })
@@ -22,7 +30,7 @@ describe('Create Experto', () => {
             foto: 'juan.jpg',
             educacion: 'Licenciatura en Nutrición',
             perfil_profesional: 'Nutriólogo con 5 años de experiencia'
-        });
+        }, { transaction });
 
         expect(experto.correo).toBe('juan@gmail.com');
     });
@@ -33,7 +41,7 @@ describe('Create Experto', () => {
             apellido_paterno: 'Perez',
             contrasena: 'juan123',
             correo: '',
-        })).rejects.toThrow();
+        }, { transaction })).rejects.toThrow();
     });
 
     test('Debe lanzar un error si el correo ya existe', async () => {
@@ -42,27 +50,24 @@ describe('Create Experto', () => {
             apellido_paterno: 'Perez',
             apellido_materno: 'Gomez',
             contrasena: 'juan123',
-            correo: 'juan@gmail.com',
+            correo: 'raulh230600@gmail.com',
             fecha_nacimiento: '1990-01-01',
             foto: 'juan.jpg',
             educacion: 'Licenciatura en Nutrición',
             perfil_profesional: 'Nutriólogo con 5 años de experiencia'
-    })).rejects.toThrow();
-        
+        }, { transaction })).rejects.toThrow();  
     })
-
-    
 });
 
-describe ('Read Experto', () => {
+describe('Read Experto', () => {
 
     test('Debe devolver un experto en nutrición', async () => {
         const experto = await ExpertoNutricion.findOne({
             where: {
-                correo: 'juan@gmail.com'
+                correo: 'raulh230600@gmail.com'
             }
         });
-        expect(experto.correo).toBe('juan@gmail.com');
+        expect(experto.correo).toBe('raulh230600@gmail.com');
     });
 
     test('Debe devolver nulo con un experto que no existe', async () => {
@@ -75,65 +80,53 @@ describe ('Read Experto', () => {
     });
 });
 
-describe ('Update Experto', () => {
+describe('Update Experto', () => {
 
     test('Debe lanzar un error si el correo ya existe', async () => {
-        await ExpertoNutricion.create({
-            nombre: 'Ana',
-            apellido_paterno: 'Lopez',
-            apellido_materno: 'Martinez',
-            contrasena: 'ana123',
-            correo: 'ana@gmail.com',
-            fecha_nacimiento: '1992-01-01',
-            foto: 'ana.jpg',
-            educacion: 'Licenciatura en Nutrición',
-            perfil_profesional: 'Nutrióloga'
-        });
-
         const experto = await ExpertoNutricion.findOne({
             where: {
-                correo: 'juan@gmail.com'
+                correo: 'mruiz@ejemplo.com'
             }
         });
 
-        experto.correo = 'ana@gmail.com';
+        experto.correo = 'raulh230600@gmail.com';
 
-        await expect(experto.save()).rejects.toThrow();
+        await expect(experto.save({ transaction })).rejects.toThrow();
     });
 
     test('Debe actualizar un experto en nutrición', async () => {
         const experto = await ExpertoNutricion.findOne({
             where: {
-                correo: 'juan@gmail.com'
+                correo: 'lgomez@ejemplo.com'
             }
         });
-        experto.correo = 'juan2@gmail.com';
-        await experto.save();
+        experto.correo = 'laura@ejemplo.com';
+        await experto.save({ transaction });
 
         const expertoActualizado = await ExpertoNutricion.findOne({
             where: {
-                correo: 'juan2@gmail.com'
-            }
-        });
-        expect(expertoActualizado.correo).toBe('juan2@gmail.com');
+                correo: 'laura@ejemplo.com'
+            }, 
+        }, { transaction });
+        expect(expertoActualizado.correo).toBe('laura@ejemplo.com');
     });
 });
 
-describe ('Delete Experto', () => {
+describe('Delete Experto', () => {
 
     test('Debe eliminar un experto en nutrición', async () => {
         const experto = await ExpertoNutricion.findOne({
             where: {
-                correo: 'juan2@gmail.com'
+                correo: 'raulh230600@gmail.com'
             }
         });
-        await experto.destroy();
+        await experto.destroy({ transaction });
 
         const expertoEliminado = await ExpertoNutricion.findOne({
             where: {
-                correo: 'juan2@gmail.com'
+                correo: 'raulh230600@gmail.com'
             }
-        });
+        }, { transaction });
 
         expect(expertoEliminado).toBeNull();
     });

@@ -22,10 +22,11 @@ INSERT INTO `alimento` (`nombre`, `calorias`, `carbohidratos`, `grasas`, `imagen
 ('Leche Lala Light', 96, 11.1, 2.4, 'leche lala light.jpg', 7.50, 1, 1, 'Lala', 6, 4),
 ('Tortilla', 64, 13.6, 0.5, 'tortilla.jpg', 1.4, 100.00, 1, 'Marca', 3, 4);
 
--- Insertar datos de ejemplo en la tabla Comida
-INSERT INTO `Comida` (`nombre`, `preparacion_video`, `receta`, `estado`) VALUES
+-- Insertar datos de ejemplo en la tabla comida
+INSERT INTO `comida` (`nombre`, `preparacion_video`, `receta`, `estado`) VALUES
 ('Ensalada de manzana', 'https://www.youtube.com/watch?v=lA54Fs79Gtc&ab_channel=ChefOropeza', 'Bate muy bien la crema con la leche condensada hasta que estén integradas. Añade el resto de los ingredientes y mezcla hasta integrar.
-', 1);
+', 1),
+('Comida de prueba', 'url_prueba', 'Receta de prueba', 1);
 
 -- Insertar datos de ejemplo en la tabla alimento_comida
 INSERT INTO `alimento_comida` (`cantidad`, `id_alimento`, `id_receta`) VALUES

@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `unidad_medida` (
     `nombre` VARCHAR(255) NOT NULL
 );
 
--- Crear la tabla Comida
+-- Crear la tabla comida
 CREATE TABLE IF NOT EXISTS `comida` (
     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `nombre` VARCHAR(255) NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `comida` (
     `receta` TEXT NOT NULL,
     `estado` BOOLEAN NOT NULL
 );
-ALTER TABLE `Comida` ADD UNIQUE `comida_nombre_unique`(`nombre`);
+ALTER TABLE `comida` ADD UNIQUE `comida_nombre_unique`(`nombre`);
 
 -- Crear la tabla alimento_comida
 CREATE TABLE IF NOT EXISTS `alimento_comida` (
@@ -111,11 +111,11 @@ CREATE TABLE IF NOT EXISTS `consumo` (
 -- Relaciones entre tablas
 ALTER TABLE `alimento_comida` 
     ADD CONSTRAINT `alimento_comida_id_alimento_foreign` FOREIGN KEY(`id_alimento`) REFERENCES `alimento`(`id`),
-    ADD CONSTRAINT `alimento_comida_id_receta_foreign` FOREIGN KEY(`id_receta`) REFERENCES `Comida`(`id`);
+    ADD CONSTRAINT `alimento_comida_id_receta_foreign` FOREIGN KEY(`id_receta`) REFERENCES `comida`(`id`);
 
 ALTER TABLE `consumo`
     ADD CONSTRAINT `consumo_id_alimento_foreign` FOREIGN KEY(`id_alimento`) REFERENCES `alimento`(`id`),
-    ADD CONSTRAINT `consumo_id_comida_foreign` FOREIGN KEY(`id_comida`) REFERENCES `Comida`(`id`),
+    ADD CONSTRAINT `consumo_id_comida_foreign` FOREIGN KEY(`id_comida`) REFERENCES `comida`(`id`),
     ADD CONSTRAINT `consumo_id_usuario_movil_foreign` FOREIGN KEY(`id_usuario_movil`) REFERENCES `usuario_movil`(`id`),
     ADD CONSTRAINT `consumo_id_momento_foreign` FOREIGN KEY(`id_momento`) REFERENCES `momento`(`id`);
 
