@@ -22,7 +22,11 @@ class Server {
     this.app.use("/api/medidietas/comidas", require("../routes/comida"));
     this.app.use("/api/medidietas/alimentos", require("../routes/alimento"));
     this.app.use("/api/medidietas/consumos", require("../routes/consumo"));
-    this.app.use("/api/medidietas/expertos", require("../routes/expertoNutricion"));
+    this.app.use(
+      "/api/medidietas/expertos",
+      require("../routes/expertoNutricion")
+    );
+    this.app.use("/api/medidietas/momentos", require("../routes/momento"));
   }
 
   listen() {
