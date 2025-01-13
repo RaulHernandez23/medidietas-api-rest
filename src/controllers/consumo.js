@@ -101,7 +101,14 @@ const obtenerConsumosDelDiaPorUsuario = async (req, res) => {
       include: [
         {
           model: Alimento,
-          attributes: ["nombre", "tamano_racion", "calorias"],
+          attributes: [
+            "nombre",
+            "tamano_racion",
+            "calorias",
+            "carbohidratos",
+            "grasas",
+            "proteinas",
+          ],
           include: [
             {
               model: UnidadMedida,
@@ -115,7 +122,7 @@ const obtenerConsumosDelDiaPorUsuario = async (req, res) => {
             {
               model: Alimento,
               through: AlimentoComida,
-              attributes: ["calorias"],
+              attributes: ["calorias", "carbohidratos", "grasas", "proteinas"],
             },
           ],
         },
@@ -143,6 +150,9 @@ const obtenerConsumosDelDiaPorUsuario = async (req, res) => {
         nombre: consumo.alimento.nombre,
         tamano_racion: tamanoRacionFormatted,
         calorias: consumo.alimento.calorias,
+        carbohidratos: consumo.alimento.carbohidratos,
+        grasas: consumo.alimento.grasas,
+        proteinas: consumo.alimento.proteinas,
         cantidad: consumo.cantidad,
         momento: consumo.momento ? consumo.momento.nombre : "Desconocido",
       };
@@ -151,13 +161,33 @@ const obtenerConsumosDelDiaPorUsuario = async (req, res) => {
     // Función auxiliar para formatear comidas
     const formatearComida = (consumo) => {
       const totalCalorias = consumo.comida.alimentos.reduce(
-        (sum, alimento) => sum + (alimento.calorias || 0),
+        (sum, alimento) =>
+          sum + alimento.calorias * (alimento.alimento_comida?.cantidad || 0),
+        0
+      );
+      const totalCarbohidratos = consumo.comida.alimentos.reduce(
+        (sum, alimento) =>
+          sum +
+          alimento.carbohidratos * (alimento.alimento_comida?.cantidad || 0),
+        0
+      );
+      const totalGrasas = consumo.comida.alimentos.reduce(
+        (sum, alimento) =>
+          sum + alimento.grasas * (alimento.alimento_comida?.cantidad || 0),
+        0
+      );
+      const totalProteinas = consumo.comida.alimentos.reduce(
+        (sum, alimento) =>
+          sum + alimento.proteinas * (alimento.alimento_comida?.cantidad || 0),
         0
       );
       return {
         nombre: consumo.comida.nombre,
         tamano_racion: null,
         calorias: totalCalorias,
+        carbohidratos: totalCarbohidratos,
+        grasas: totalGrasas,
+        proteinas: totalProteinas,
         cantidad: consumo.cantidad,
         momento: consumo.momento ? consumo.momento.nombre : "Desconocido",
       };
@@ -190,6 +220,11 @@ const obtenerConsumosDelDiaPorUsuario = async (req, res) => {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ error: error.message });
   }
+};
+
+module.exports = {
+  registrarConsumo,
+  obtenerConsumosDelDiaPorUsuario,
 };
 
 module.exports = {
