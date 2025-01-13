@@ -6,10 +6,65 @@ const sequelize = require("../models/database");
 
 const obtenerComidas = async (req, res) => {
   try {
-    const comidas = await Comida.findAll();
-    res.json(comidas);
+    const comidas = await Comida.findAll({
+      include: [
+        {
+          model: Alimento,
+          through: Alimento_Comida,
+          attributes: ["calorias", "carbohidratos", "grasas", "proteinas"],
+        },
+      ],
+    });
+
+    // Función auxiliar para calcular los valores nutricionales totales
+    const calcularValoresNutricionales = (comida) => {
+      const totalCalorias = comida.alimentos.reduce(
+        (sum, alimento) =>
+          sum + alimento.calorias * (alimento.alimento_comida?.cantidad || 0),
+        0
+      );
+      const totalCarbohidratos = comida.alimentos.reduce(
+        (sum, alimento) =>
+          sum +
+          alimento.carbohidratos * (alimento.alimento_comida?.cantidad || 0),
+        0
+      );
+      const totalGrasas = comida.alimentos.reduce(
+        (sum, alimento) =>
+          sum + alimento.grasas * (alimento.alimento_comida?.cantidad || 0),
+        0
+      );
+      const totalProteinas = comida.alimentos.reduce(
+        (sum, alimento) =>
+          sum + alimento.proteinas * (alimento.alimento_comida?.cantidad || 0),
+        0
+      );
+
+      return {
+        totalCalorias,
+        totalCarbohidratos,
+        totalGrasas,
+        totalProteinas,
+      };
+    };
+
+    // Formatear la respuesta
+    const respuesta = comidas.map((comida) => {
+      const valoresNutricionales = calcularValoresNutricionales(comida);
+      const { alimentos, ...comidaSinAlimentos } = comida.toJSON();
+      return {
+        ...comidaSinAlimentos,
+        Calorias: valoresNutricionales.totalCalorias,
+        Carbohidratos: valoresNutricionales.totalCarbohidratos,
+        Grasas: valoresNutricionales.totalGrasas,
+        Proteinas: valoresNutricionales.totalProteinas,
+      };
+    });
+
+    res.status(200).json(respuesta);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ error: error.message });
   }
 };
 
