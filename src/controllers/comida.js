@@ -54,10 +54,10 @@ const obtenerComidas = async (req, res) => {
       const { alimentos, ...comidaSinAlimentos } = comida.toJSON();
       return {
         ...comidaSinAlimentos,
-        Calorias: valoresNutricionales.totalCalorias,
-        Carbohidratos: valoresNutricionales.totalCarbohidratos,
-        Grasas: valoresNutricionales.totalGrasas,
-        Proteinas: valoresNutricionales.totalProteinas,
+        calorias: valoresNutricionales.totalCalorias,
+        carbohidratos: valoresNutricionales.totalCarbohidratos,
+        grasas: valoresNutricionales.totalGrasas,
+        proteinas: valoresNutricionales.totalProteinas,
       };
     });
 
