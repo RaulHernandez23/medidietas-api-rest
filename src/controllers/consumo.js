@@ -66,8 +66,7 @@ const registrarConsumo = async (req, res) => {
 };
 
 const obtenerConsumosDelDiaPorUsuario = async (req, res) => {
-  const { nombre_usuario } = req.params;
-  const { fecha } = req.body;
+  const { nombre_usuario, fecha } = req.params;
 
   if (!fecha) {
     return res.status(400).json({ error: "Fecha es requerida" });
@@ -183,7 +182,7 @@ const obtenerConsumosDelDiaPorUsuario = async (req, res) => {
       );
       return {
         nombre: consumo.comida.nombre,
-        tamano_racion: null,
+        tamano_racion: "No aplica",
         calorias: totalCalorias,
         carbohidratos: totalCarbohidratos,
         grasas: totalGrasas,

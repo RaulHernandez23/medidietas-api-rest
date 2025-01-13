@@ -8,6 +8,6 @@ const {
 const router = express.Router();
 
 router.post("/", [validarJWT], registrarConsumo);
-router.get("/:nombre_usuario", [validarJWT], obtenerConsumosDelDiaPorUsuario);
+router.get("/:nombre_usuario/:fecha", [validarJWT], obtenerConsumosDelDiaPorUsuario);
 
 module.exports = router;

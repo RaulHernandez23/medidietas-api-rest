@@ -58,7 +58,7 @@ INSERT INTO `usuario_movil` (`nombre_usuario`, `nombre`, `apellido_paterno`, `ap
 
 -- Insertar datos de ejemplo en la tabla consumo
 INSERT INTO `consumo` (`fecha`, `id_momento`, `id_alimento`, `id_comida`, `id_usuario_movil`, `cantidad`) VALUES
-('2024-12-05', 1, 1, NULL, 1, 150.00),
-('2024-12-05', 2, NULL, 1, 1, 250.00),
-('2024-12-05', 1, 2, NULL, 1, 200.00),
-('2024-12-05', 2, NULL, 1, 1, 300.00);
+('2024-12-05', 1, 1, NULL, 1, 1.00),
+('2024-12-05', 2, NULL, 1, 1, 1.00),
+('2024-12-05', 1, 2, NULL, 1, 2.00),
+('2024-12-05', 2, NULL, 1, 1, 1.00);
