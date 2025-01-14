@@ -50,16 +50,50 @@ const registrarConsumo = async (req, res) => {
       return res.status(400).json({ error: "Momento no encontrado" });
     }
 
-    const nuevoConsumo = await Consumo.create({
-      fecha,
-      cantidad,
-      id_momento,
-      id_alimento,
-      id_comida,
+    // Normalizar la fecha para la comparación
+    const fechaInicio = new Date(fecha);
+    fechaInicio.setHours(0, 0, 0, 0);
+    const fechaFin = new Date(fecha);
+    fechaFin.setHours(23, 59, 59, 999);
+
+    // Construir la condición de búsqueda
+    const whereCondition = {
+      fecha: {
+        [Op.between]: [fechaInicio, fechaFin],
+      },
       id_usuario_movil,
+      id_momento,
+    };
+
+    if (id_alimento) {
+      whereCondition.id_alimento = id_alimento;
+    } else if (id_comida) {
+      whereCondition.id_comida = id_comida;
+    }
+
+    // Buscar un consumo existente con la misma fecha, id_usuario_movil, id_momento y el mismo id_alimento o id_comida
+    const consumoExistente = await Consumo.findOne({
+      where: whereCondition,
     });
 
-    res.status(201).json(nuevoConsumo);
+    if (consumoExistente) {
+      // Actualizar la cantidad del consumo existente
+      consumoExistente.cantidad =
+        parseFloat(consumoExistente.cantidad) + parseFloat(cantidad);
+      await consumoExistente.save();
+      return res.status(200).json(consumoExistente);
+    } else {
+      // Crear un nuevo consumo
+      const nuevoConsumo = await Consumo.create({
+        fecha,
+        cantidad,
+        id_momento,
+        id_alimento,
+        id_comida,
+        id_usuario_movil,
+      });
+      return res.status(201).json(nuevoConsumo);
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
