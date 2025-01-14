@@ -221,12 +221,56 @@ const obtenerConsumosDelDiaPorUsuario = async (req, res) => {
   }
 };
 
-module.exports = {
-  registrarConsumo,
-  obtenerConsumosDelDiaPorUsuario,
+const modificarConsumo = async (req, res) => {
+  const { id } = req.params;
+  const { cantidad, id_momento } = req.body;
+
+  try {
+    // Verificar que el consumo exista
+    const consumo = await Consumo.findByPk(id);
+    if (!consumo) {
+      return res.status(404).json({ error: "Consumo no encontrado" });
+    }
+
+    // Verificar que el momento exista
+    const momento = await Momento.findByPk(id_momento);
+    if (!momento) {
+      return res.status(400).json({ error: "Momento no encontrado" });
+    }
+
+    // Actualizar los atributos
+    consumo.cantidad = cantidad;
+    consumo.id_momento = id_momento;
+    await consumo.save();
+
+    res.status(200).json({ mensaje: "Consumo modificado correctamente" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const eliminarConsumo = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Verificar que el consumo exista
+    const consumo = await Consumo.findByPk(id);
+    if (!consumo) {
+      return res.status(404).json({ error: "Consumo no encontrado" });
+    }
+
+    // Eliminar el consumo
+    await consumo.destroy();
+
+    res.status(200).json({ mensaje: "Consumo eliminado correctamente" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 module.exports = {
   registrarConsumo,
   obtenerConsumosDelDiaPorUsuario,
+  modificarConsumo,
+  eliminarConsumo,
 };
