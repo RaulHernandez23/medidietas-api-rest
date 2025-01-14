@@ -146,6 +146,7 @@ const obtenerConsumosDelDiaPorUsuario = async (req, res) => {
         consumo.alimento.tamano_racion > 1 ? `${tamanoRacion}s` : tamanoRacion;
 
       return {
+        id: consumo.id,
         nombre: consumo.alimento.nombre,
         tamano_racion: tamanoRacionFormatted,
         calorias: consumo.alimento.calorias,
@@ -181,6 +182,7 @@ const obtenerConsumosDelDiaPorUsuario = async (req, res) => {
         0
       );
       return {
+        id: consumo.id,
         nombre: consumo.comida.nombre,
         tamano_racion: "No aplica",
         calorias: totalCalorias,
